@@ -39,7 +39,8 @@
   <!-- Post a new comment -->
   <h1>Leave a comment</h1>
 
-  <form id="comment-new" class="form" action="https://api.staticman.net/v2/entry/BeyondTheClouds/blog/gh-pages" method="POST">
+  {% assign repo = site.repository %}
+  <form id="comment-new" class="form" action="https://api.staticman.net/v2/entry/{{ repo }}/gh-pages/comments" method="POST">
       <!-- Your comment as been submitted and is under review -->
       <input name="options[redirect]" type="hidden" value="https://beyondtheclouds.github.io/blog/shipped-comment.html">
 
