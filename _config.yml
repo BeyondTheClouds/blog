@@ -6,9 +6,10 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: BeyondTheClouds blog
+title: BeyondTheClouds Blog
 email: discovery-contact@inria.fr
-description: > # this means to ignore newlines until "baseurl:"
+description: "The <a href='https://beyondtheclouds.github.io/'>Discovery</a> Initiative.
+  Discover what could happen beyond the Clouds!"
 baseurl: "/blog" # the subpath of your site, e.g. /blog
 url: "https://beyondtheclouds.github.io/blog/" # the base hostname & protocol for your site
 twitter_username: BeyondClouds_io
@@ -25,7 +26,7 @@ staticman:
 
   # Name of the branch being used. Must match the one sent in the URL
   # of the request.
-  branch: "gh-pages"
+  branch: gh-pages
 
   # Text to use as the commit message or pull request title. Accepts
   # placeholders.
@@ -56,28 +57,7 @@ staticman:
   # main branch automatically.
   moderation: true
 
-  # Name of the site. Used in notification emails.
-  name: "BeyonTheClouds blog"
 
-  # Notification settings. When enabled, users can choose to receive notifications
-  # via email when someone adds a reply or a new comment. This requires an account
-  # with Mailgun, which you can get for free at http://mailgun.com.
-  #notifications:
-    # Enable notifications
-    #enabled: true
-
-    # (!) ENCRYPTED
-    #
-    # Mailgun API key
-    #apiKey: "1q2w3e4r"
-
-    # (!) ENCRYPTED
-    #
-    # Mailgun domain (encrypted)
-    #domain: "4r3e2w1q"
-
-  # (*) REQUIRED
-  #
   # Destination path (directory) for the data files. Accepts placeholders.
   path: "_data/comments/{options.slug}"
 
