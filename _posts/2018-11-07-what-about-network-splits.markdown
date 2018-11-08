@@ -2,7 +2,7 @@
 layout: post
 title: What about network splits
 date: 2018-11-07
-author: Marie Delavergne, Ronan-Alexandre Cherrueau, Adrien Lebre
+author: Marie Delavergne, Ronan-Alexandre Cherrueau
 categories: [OpenStack, network partitions]
 tags: [OpenStack, network partitions, network splits, edge]
 ---
@@ -13,15 +13,15 @@ tags: [OpenStack, network partitions, network splits, edge]
 Modern applications in the realm of the internet, such as the internet of things, compel the development for edge infrastructures. The concept of edge computing is to distribute the computation on a large number of edge devices, closer to the places where the data are collected.
 We define this as hundreds of auto-managed and geo-distributed micro data center of dozens of servers. Since they are distributed all over the globe, one can expect to have different latency and bandwith across the network. But what can also be expected and have nonetheless unexpected consequences are network partitions that could happen over such a distributed network.
 
-A partition occurs when the link to a resource is severed and this resource becomes isolated from the others. This resource can be a node from a database, a compute node, an entire data center, etc.
+A partition occurs when the link to a resource is severed and this resource becomes isolated from the others. This resource can be a node from a database, a compute node, an entire data center, etc. When this split happens, we can expected either that this isolated part executions can differ from the main partition, which puts it in an incoherent state, or that it can become simply unavailable.
 
-TODO: OPENSTACK
-
+To build an edge infrastructure without reinventing the wheel, the Discovery initiative investigates the use of OpenStack. OpenStack is an open-source cloud computing infrastructure resource manager widely used, and more and more in the context of edge computing. Openstack is built of two types of nodes which constitutes the data plane on one side and the control plane on the other. The data plane
+nodes are able to fulfill typical XaaS needs, such as computation, storage, network, etc. The control nodes are required to process the incoming requests which will probably require to communicate with the data plane. Since all these services are distributed across different nodes, we can expect to get a partition between them at some point.
 
 The goal of this study is to shed some light on the behavior of OpenStack when network partition occurs between a control and a compute node.
 
-
-# Base Openstack configuration
+# Experimental protocol
+## Base configuration
 
 To make the required tests, we used [Enos](https://github.com/BeyondTheClouds/enos), a tool previously developed by the Discovery Initiative, and deployed on [Grid'5000](https://www.grid5000.fr/mediawiki/index.php/Grid5000:Home), a testbed dedicated to research.  The platform gives access to approximately 1000 machines grouped in 30 clusters geographically distributed in 8 sites. This study uses the [paravance cluster](https://www.grid5000.fr/mediawiki/index.php/Rennes:Hardware#paravance) composed of 72 nodes with each:
 - **CPU:** Intel Xeon E5-2630 v3 (Haswell, 2.40GHz, 2 CPUs/node, 8 cores/CPU)
@@ -30,13 +30,59 @@ To make the required tests, we used [Enos](https://github.com/BeyondTheClouds/en
   - eth0/eno1, Ethernet, configured rate: 10 Gbps, model: Intel 82599ES 10-Gigabit SFI/SFP+ Network Connection, driver: ixgbe
   - eth1/eno2, Ethernet, configured rate: 10 Gbps, model: Intel 82599ES 10-Gigabit SFI/SFP+ Network Connection, driver: ixgbe
 
-We begin with a configuration with 3 compute nodes, one node to handle Neutron and one control node to manage everything (Glance, Keystone, MariaDB, Horizon, etc.), as shown on Figure<a href="#os_topo_base">1</a>. Every VM we booted were placed on the compute nodes, numbered from 1 to 3.
+Enos enables us to get the resources, deploy the required topology and configure OpenStack according to our needs. We used the following topology:
+```python
+topology:
+  grp1:
+    paravance:
+      control: 1
+      network: 1
+  grp2:
+    paravance:
+      compute: 1
+  grp3:
+    paravance:
+      compute: 2
+```
+We thus created 3 different groups of 5 paravance servers, connected by two virtual LANs and plugged to each nodes using two different NICs. This servers are 3 compute nodes, one to handle Neutron (network) and one control to manage everything (Glance, Keystone, MariaDB, Horizon, etc.), as shown on Figure<a href="#os_topo_base">1</a>.
+
+Every VM we booted were placed on the compute nodes, numbered from 1 to 3. As seen on the figure and the topology, the nodes are divided into 3 groups: grp1 for the control and the network nodes, grp1 for the compute node which will be isolated and the grp3 acting as compute nodes to make the experiment as well as control samples.
+
 <figure id="os_topo_base">
 <img src='{{ "assets/what-about-network-splits/openstack_topology_base.svg" | absolute_url }}' alt="openstack base topology">
 <figcaption style="text-align:center"><span class="figure-number">Figure 1: </span>Openstack base topology</figcaption>
 </figure>
 
-Enos deploy everything as displayed in the previous figure. It creates two VLans, each one associated to a node device. We then applied some tc rules using `enos tc`:
+Enos deployed everything as displayed in the previous figure. It created two VLans, each one associated to a node's NIC.
+
+## OpenStack topology
+
+We then used a [heat template file]({{ "assets/what-about-network-splits/heat.hot" | absolute_url }}) to deploy 6 VMs distributed equally across the computes (i.e. 2 VMs per compute) and across 2 private networks (i.e. 3 VMs per network).
+<figure id="net_topo">
+<img src='{{ "assets/what-about-network-splits/network_topology.svg" | absolute_url }}' alt="Network topology">
+	<figcaption style="text-align:center"><span class="figure-number">Figure 2: </span>Network topology</figcaption>
+</figure>
+
+The figure [2](#net_topo) presents the network topology in a similar way to Horizon dashboard. We can see that VMs 1, 3 and 5 are in the first network (Nw1) and the 3 others in the second network (Nw2). The yellow/purple/orange represents the compute on which the VMs are located. Thus, VMs 1 and 2 are collocated and VM 3 and 6 are separated from each other. To sum up the positioning of VMs across computes, groups and network:
+
+| VM  | Compute | Group | Network |
+|:---:| :---:   | :---: | :---:   |
+| 1   | 1       | 2     | 1       |
+| 2   | 2       | 2     | 2       |
+| 3   | 2       | 3     | 1       |
+| 4   | 2       | 3     | 2       |
+| 5   | 3       | 3     | 1       |
+| 6   | 3       | 3     | 2       |
+
+This architecture allows us to test communications between two networks, two computes and to the outside.
+We consider three types of communications:
+  * **L2/L3**: In **L2** configuration, everything happens in the same network, whereas in **L3** the messages goes from a network to another.
+  * **Full/Dense**: This is about the positioning of the VMs towards the compute. In **dense** mode, the VMs are on the same compute. In **full mode**, they are scattered on two different computes.
+  * **East-West/North-South**: Whether the VMs talk to each other (**East-West**) or to an external address, e.g. 8.8.8.8 (**North-South**)
+
+## Cutting the edge
+
+We then applied some tc rules using `enos tc` from Enos (these lines are simply put in the configuration file of Enos):
 ```python
 network_constraints:
   enable: true
@@ -50,26 +96,23 @@ network_constraints:
       symetric: true
       network: 'network_interface'
 ```
+These rules use traffic control to drop all messages (`loss:100%`) on the nodes of grp1 going go or coming from the ip adresses of grp2 nodes and vice-versa (`symetric:true`). This only concerns the `network_interface` vLAN, which means it is only for one NIC (used by OpenStack).
 
+We can nonetheless represent the topology depicted in Figure [3](#os_topo), as far as OpenStack is concerned:
 <figure id="os_topo">
 <img src='{{ "assets/what-about-network-splits/openstack_topology.svg" | absolute_url }}' alt="openstack topology">
-<figcaption style="text-align:center"><span class="figure-number">Figure 1: </span>Openstack topology</figcaption>
-</figure>
-
-# Network topology
-
-<figure id="net_topo">
-<img src='{{ "assets/what-about-network-splits/network_topology.svg" | absolute_url }}' alt="Network topology">
-	<figcaption style="text-align:center"><span class="figure-number">Figure 1: </span>Network topology</figcaption>
+<figcaption style="text-align:center"><span class="figure-number">Figure 3: </span>Openstack topology</figcaption>
 </figure>
 
 
 
 # Results
 
+<!-- In order to simplify the results, we only consider one (two when needed) network, one (two when needed) compute and two VMs, so the names of the VMs won't reflect what was presented before but it's the same architecture with fewer protagonists. This means, for example, on figure [4](#L2_full), VM 1 and 2 can be either -->
+
 <figure id="L2_full">
 <img src='{{ "assets/what-about-network-splits/L2_full.svg" | absolute_url }}' alt="L2 full">
-<figcaption style="text-align:center"><span class="figure-number">Figure 2: </span>L2 Full</figcaption>
+<figcaption style="text-align:center"><span class="figure-number">Figure 4: </span>L2 Full</figcaption>
 </figure>
 
 | Domain | Colocation | Ping type   |  Source         | Destination    | Result |
