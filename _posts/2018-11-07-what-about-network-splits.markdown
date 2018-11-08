@@ -13,7 +13,7 @@ tags: [OpenStack, network partitions, network splits, edge]
 Modern applications in the realm of the internet, such as the internet of things, compel the development for edge infrastructures. The concept of edge computing is to distribute the computation on a large number of edge devices, closer to the places where the data are collected.
 We define this as hundreds of auto-managed and geo-distributed micro data center of dozens of servers. Since they are distributed all over the globe, one can expect to have different latency and bandwith across the network. But what can also be expected and have nonetheless unexpected consequences are network partitions that could happen over such a distributed network.
 
-A partition occurs when the link to a resource is severed and this resource becomes isolated from the others. This resource can be a node from a database, a compute node, an entire data center, etc. When this split happens, we can expected either that this isolated part executions can differ from the main partition, which puts it in an incoherent state, or that it can become simply unavailable.
+A partition occurs when the link to a resource is severed and this resource becomes isolated from the others. This resource can be a node from a database, a compute node, an entire data center, etc. When this split happens, we can expected either that this isolated part executions can differ from the main partition, which puts it in an incoherent state, or that it can become simply unavailable. The way it is expected to behave is called the partition-tolerant behavior.
 
 To build an edge infrastructure without reinventing the wheel, the Discovery initiative investigates the use of OpenStack. OpenStack is an open-source cloud computing infrastructure resource manager widely used, and more and more in the context of edge computing. Openstack is built of two types of nodes which constitutes the data plane on one side and the control plane on the other. The data plane
 nodes are able to fulfill typical XaaS needs, such as computation, storage, network, etc. The control nodes are required to process the incoming requests which will probably require to communicate with the data plane. Since all these services are distributed across different nodes, we can expect to get a partition between them at some point.
@@ -30,7 +30,7 @@ To make the required tests, we used [Enos](https://github.com/BeyondTheClouds/en
   - eth0/eno1, Ethernet, configured rate: 10 Gbps, model: Intel 82599ES 10-Gigabit SFI/SFP+ Network Connection, driver: ixgbe
   - eth1/eno2, Ethernet, configured rate: 10 Gbps, model: Intel 82599ES 10-Gigabit SFI/SFP+ Network Connection, driver: ixgbe
 
-Enos enables us to get the resources, deploy the required topology and configure OpenStack according to our needs. We used the following topology:
+Enos enables us to get the resources, deploy the required topology and configure OpenStack according to our needs. We used the following configuration:
 ```python
 topology:
   grp1:
@@ -188,3 +188,11 @@ This had to be done using a different topology as we did not have a compute that
 | L2     | dense      | North-South |  VM2 (C1-Nw1)   | 8.8.8.8        | <span style="color:red">X</span>      |
 
 As for the previous dense experiments, nothing can be done since we can not reach the VMs on compute1.
+
+
+## Playing on the edge
+
+As stated before, when a network gets partitioned, the resources have to implement a partition-tolerant behavior in order to avoid an interruption of service. In this part, we tried to poke around OpenStack and see how well it behaves under a split.
+
+
+First thing we have done is to cut the network, then kill the VMs on the partitioned compute. This can be done since we still can access the compute through Grid'5000 and is done thanks to `virsh destroy <VM_number>`. We then plug the compute back to OpenStack by resetting traffic control rules thanks to `enos tc --reset`. We had two good surprises at this moment. First, the compute node reappear as active in OpenStack. Second, the VMs appeared as shutoff quite quickly after the compute rejoined the network.
