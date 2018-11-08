@@ -8,7 +8,7 @@ tags: [OpenStack, network partitions, network splits, edge]
 ---
 
 
-# Living on the edge
+# Living on the edge #
 
 Modern applications in the realm of the internet, such as the internet of things, compel the development for edge infrastructures. The concept of edge computing is to distribute the computation on a large number of edge devices, closer to the places where the data are collected.
 We define this as hundreds of auto-managed and geo-distributed micro data center of dozens of servers. Since they are distributed all over the globe, one can expect to have different latency and bandwith across the network. But what can also be expected and have nonetheless unexpected consequences are network partitions that could happen over such a distributed network.
@@ -20,8 +20,8 @@ nodes are able to fulfill typical XaaS needs, such as computation, storage, netw
 
 The goal of this study is to shed some light on the behavior of OpenStack when network partition occurs between a control and a compute node.
 
-# Experimental protocol
-## Base configuration
+# Experimental protocol #
+## Base configuration ##
 
 To make the required tests, we used [Enos](https://github.com/BeyondTheClouds/enos), a tool previously developed by the Discovery Initiative, and deployed on [Grid'5000](https://www.grid5000.fr/mediawiki/index.php/Grid5000:Home), a testbed dedicated to research.  The platform gives access to approximately 1000 machines grouped in 30 clusters geographically distributed in 8 sites. This study uses the [paravance cluster](https://www.grid5000.fr/mediawiki/index.php/Rennes:Hardware#paravance) composed of 72 nodes with each:
 - **CPU:** Intel Xeon E5-2630 v3 (Haswell, 2.40GHz, 2 CPUs/node, 8 cores/CPU)
@@ -55,7 +55,7 @@ Every VM we booted were placed on the compute nodes, numbered from 1 to 3. As se
 
 Enos deployed everything as displayed in the previous figure. It created two VLans, each one associated to a node's NIC.
 
-## OpenStack topology
+## OpenStack topology ##
 
 We then used a [heat template file]({{ "assets/what-about-network-splits/heat.hot" | absolute_url }}) to deploy 6 VMs distributed equally across the computes (i.e. 2 VMs per compute) and across 2 private networks (i.e. 3 VMs per network).
 <figure id="net_topo">
@@ -80,7 +80,7 @@ We consider three types of communications:
   * **Full/Dense**: This is about the positioning of the VMs towards the compute. In **dense** mode, the VMs are on the same compute. In **full mode**, they are scattered on two different computes.
   * **East-West/North-South**: Whether the VMs talk to each other (**East-West**) or to an external address, e.g. 8.8.8.8 (**North-South**)
 
-## Cutting the edge
+## Cutting the edge ##
 
 We then applied some tc rules using `enos tc` from Enos (these lines are simply put in the configuration file of Enos):
 ```python
@@ -106,9 +106,54 @@ We can nonetheless represent the topology depicted in Figure [3](#os_topo), as f
 
 
 
-# Results
+# Results #
 
-<!-- In order to simplify the results, we only consider one (two when needed) network, one (two when needed) compute and two VMs, so the names of the VMs won't reflect what was presented before but it's the same architecture with fewer protagonists. This means, for example, on figure [4](#L2_full), VM 1 and 2 can be either -->
+We deployed our topology and pinged the VMs from one another (East-West) or the public network (North-South) to ensure everything worked as intended. We then cut the network using `enos tc`. This had several consequences:  TODO
+1. On the horizon dashboard and through the command `openstack TODO`, compute1 became down after a few seconds
+2. The VMs became unattainable through the command `openstack server ssh`
+3. The VMs were not marked as down or shutoff on the horizon dashboard TODO: command line
+
+We will now detail more about the results.
+
+
+## A bit of pinging ##
+
+### L3 Full East-West/North-South ###
+
+<figure id="L3_full">
+<img src='{{ "assets/what-about-network-splits/L3_full.svg" | absolute_url }}' alt="L3 full">
+<figcaption style="text-align:center"><span class="figure-number">Figure 6: </span>L3 Full</figcaption>
+</figure>
+
+
+| Domain | Colocation | Ping type   |  Source         | Destination    | Result |
+| ------ | ---------- | ----------- | --------------- | -------------- | ------ |
+| L3     | full       | East-West   |  VM1 (C1-Nw1)   | VM4 (C2-Nw2)   | <span style="color:red">X</span>      |
+| L3     | full       | East-West   |  VM4 (C2-Nw2)   | VM1 (C1-Nw1)   | <span style="color:red">X</span>      |
+| L3     | full       | North-South |  VM1 (C1-Nw1)   | 8.8.8.8        | <span style="color:red">X</span>      |
+| L3     | full       | North-South |  VM4 (C2-Nw1)   | 8.8.8.8        | <span style="color:green">V </span>     |
+
+As expected, compute1 is unreachable so no communication were possible through the VMs.
+
+
+### L3 Dense East-West/North-South ###
+
+<figure id="L3_dense">
+<img src='{{ "assets/what-about-network-splits/L3_dense.svg" | absolute_url }}' alt="L3 dense">
+<figcaption style="text-align:center"><span class="figure-number">Figure 7: </span>L3 Dense</figcaption>
+</figure>
+
+| Domain | Colocation | Ping type   |  Source         | Destination    | Result |
+| ------ | ---------- | ----------- | --------------- | -------------- | ------ |
+| L3     | dense      | East-West   |  VM1 (C1-Nw1)   | VM2 (C1-Nw2)   | <span style="color:red">X</span>      |
+| L3     | dense      | East-West   |  VM2 (C1-Nw2)   | VM1 (C1-Nw1)   | <span style="color:red">X</span>      |
+| L3     | dense      | North-South |  VM1 (C1-Nw1)   | 8.8.8.8        | <span style="color:red">X</span>      |
+| L3     | dense      | North-South |  VM2 (C1-Nw2)   | 8.8.8.8        | <span style="color:red">X</span>      |
+
+As previously, since both VMs are on the unreachable compute, we can not get any ping.
+
+
+### L2 Full East-West/North-South ###
 
 <figure id="L2_full">
 <img src='{{ "assets/what-about-network-splits/L2_full.svg" | absolute_url }}' alt="L2 full">
@@ -117,14 +162,21 @@ We can nonetheless represent the topology depicted in Figure [3](#os_topo), as f
 
 | Domain | Colocation | Ping type   |  Source         | Destination    | Result |
 | ------ | ---------- | ----------- | --------------- | -------------- | ------ |
-| L2     | full       | East-West   |  VM1 (C1-Nw1)   | VM2 (C2-Nw1)   | <span style="color:red"><span style="color:red">X</span></span>      |
-| L2     | full       | East-West   |  VM2 (C2-Nw1)   | VM1 (C1-Nw1)   | <span style="color:green">V </span>     |
+| L2     | full       | East-West   |  VM1 (C1-Nw1)   | VM3 (C2-Nw1)   | <span style="color:red"><span style="color:red">X</span></span>      |
+| L2     | full       | East-West   |  VM3 (C2-Nw1)   | VM1 (C1-Nw1)   | <span style="color:green">V </span>     |
 | L2     | full       | North-South |  VM1 (C1-Nw1)   | 8.8.8.8        | <span style="color:red">X</span>      |
-| L2     | full       | North-South |  VM2 (C2-Nw1)   | 8.8.8.8        | <span style="color:green">V </span>     |
+| L2     | full       | North-South |  VM3 (C2-Nw1)   | 8.8.8.8        | <span style="color:green">V </span>     |
+
+TODO check
+Here the VM on the compute2 (VM3) seems to be able to ping the one on compute1 (VM1).
+
+### L2 Dense East-West/North-South ###
+
+This had to be done using a different topology as we did not have a compute that had two VMs on the same network. The principle remains entirely the same.
 
 <figure id="L2_dense">
 <img src='{{ "assets/what-about-network-splits/L2_dense.svg" | absolute_url }}' alt="L2 dense">
-<figcaption style="text-align:center"><span class="figure-number">Figure 3: </span>L3 Dense</figcaption>
+<figcaption style="text-align:center"><span class="figure-number">Figure 5: </span>L3 Dense</figcaption>
 </figure>
 
 
@@ -135,28 +187,4 @@ We can nonetheless represent the topology depicted in Figure [3](#os_topo), as f
 | L2     | dense      | North-South |  VM1 (C1-Nw1)   | 8.8.8.8        | <span style="color:red">X</span>      |
 | L2     | dense      | North-South |  VM2 (C1-Nw1)   | 8.8.8.8        | <span style="color:red">X</span>      |
 
-<figure id="L3_full">
-<img src='{{ "assets/what-about-network-splits/L3_full.svg" | absolute_url }}' alt="L3 full">
-<figcaption style="text-align:center"><span class="figure-number">Figure 4: </span>L3 Full</figcaption>
-</figure>
-
-
-| Domain | Colocation | Ping type   |  Source         | Destination    | Result |
-| ------ | ---------- | ----------- | --------------- | -------------- | ------ |
-| L3     | full       | East-West   |  VM1 (C1-Nw1)   | VM2 (C2-Nw2)   | <span style="color:red">X</span>      |
-| L3     | full       | East-West   |  VM2 (C2-Nw2)   | VM1 (C1-Nw1)   | <span style="color:red">X</span>      |
-| L3     | full       | North-South |  VM1 (C1-Nw1)   | 8.8.8.8        | <span style="color:red">X</span>      |
-| L3     | full       | North-South |  VM2 (C2-Nw1)   | 8.8.8.8        | <span style="color:green">V </span>     |
-
-
-<figure id="L3_dense">
-<img src='{{ "assets/what-about-network-splits/L3_dense.svg" | absolute_url }}' alt="L3 dense">
-<figcaption style="text-align:center"><span class="figure-number">Figure 5: </span>L3 Dense</figcaption>
-</figure>
-
-| Domain | Colocation | Ping type   |  Source         | Destination    | Result |
-| ------ | ---------- | ----------- | --------------- | -------------- | ------ |
-| L3     | dense      | East-West   |  VM1 (C1-Nw1)   | VM2 (C1-Nw2)   | <span style="color:red">X</span>      |
-| L3     | dense      | East-West   |  VM2 (C1-Nw2)   | VM1 (C1-Nw1)   | <span style="color:red">X</span>      |
-| L3     | dense      | North-South |  VM1 (C1-Nw1)   | 8.8.8.8        | <span style="color:red">X</span>      |
-| L3     | dense      | North-South |  VM2 (C1-Nw2)   | 8.8.8.8        | <span style="color:red">X</span>      |
+As for the previous dense experiments, nothing can be done since we can not reach the VMs on compute1.

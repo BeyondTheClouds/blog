@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="282.89585"
-     inkscape:cy="239.10181"
+     inkscape:cx="91.89585"
+     inkscape:cy="235.10181"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -125,7 +125,7 @@
          id="tspan8067"
          x="150.62759"
          y="183.66458"
-         style="font-size:4.93888903px;stroke-width:0.26458332px">VM2</tspan></text>
+         style="font-size:4.93888903px;stroke-width:0.26458332px">VM3</tspan></text>
     <g
        transform="matrix(1.4277759,0,0,1.4277759,62.3014,74.024125)"
        id="g7078-9-5">

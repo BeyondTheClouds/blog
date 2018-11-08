@@ -17,7 +17,12 @@
    inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="L3_full.svg">
   <defs
-     id="defs7382" />
+     id="defs7382">
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect854"
+       is_visible="true" />
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -26,8 +31,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="381.16831"
-     inkscape:cy="154.64323"
+     inkscape:cx="317.02526"
+     inkscape:cy="339.25904"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -49,7 +54,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -130,10 +135,10 @@
        y="166.56042"
        id="text8069"><tspan
          sodipodi:role="line"
-         id="tspan8067"
          x="146.57916"
          y="166.56042"
-         style="font-size:4.93888903px;stroke-width:0.26458332px">VM2</tspan></text>
+         style="font-size:4.93888903px;stroke-width:0.26458332px"
+         id="tspan860">VM4</tspan></text>
     <g
        transform="matrix(1.4277759,0,0,1.4277759,58.252958,56.919968)"
        id="g7078-9-5">
@@ -235,15 +240,6 @@
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#e26200;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2.1199999, 1.05999995;stroke-dashoffset:0;stroke-opacity:1"
-       d="M 66.100235,149.86934 99.645684,100.60152"
-       id="path8226"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0"
-       inkscape:connection-start="#g7078-9"
-       inkscape:connection-end="#g8186"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#e26200;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2.1199999, 1.05999995;stroke-dashoffset:0;stroke-opacity:1"
        d="M 134.1381,149.52274 106.09218,100.63199"
        id="path8230"
        inkscape:connector-type="polyline"
@@ -254,11 +250,11 @@
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:7.27604151px;line-height:2.90314078px;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#e26200;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="102.1022"
-       y="124.07755"
+       y="125.13589"
        id="text8234"><tspan
          sodipodi:role="line"
          x="102.1022"
-         y="124.07755"
+         y="125.13589"
          style="font-size:4.93888903px;line-height:2.90314078px;text-align:center;text-anchor:middle;fill:#e26200;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.26458332px;stroke-opacity:1"
          id="tspan8236">North -South</tspan></text>
     <text
@@ -272,5 +268,10 @@
          y="162.17755"
          style="font-size:4.93888903px;line-height:2.9104166px;text-align:center;text-anchor:middle;fill:#db05ff;fill-opacity:1;stroke-width:0.26458332px"
          id="tspan8246">East - West</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#e26000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:2.1199999, 1.05999994999999991;stroke-dashoffset:0"
+       d="M 66.138446,149.47744 C 98.946779,100.13265 99.07907,100.13265 99.07907,100.13265"
+       id="path858"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>
