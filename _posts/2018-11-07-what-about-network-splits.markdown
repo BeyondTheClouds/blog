@@ -63,15 +63,15 @@ We then used a [heat template file]({{ "assets/what-about-network-splits/heat.ho
 	<figcaption style="text-align:center"><span class="figure-number">Figure 2: </span>Network topology</figcaption>
 </figure>
 
-The figure [2](#net_topo) presents the network topology in a similar way to Horizon dashboard. We can see that VMs 1, 3 and 5 are in the first network (Nw1) and the 3 others in the second network (Nw2). The yellow/purple/orange represents the compute on which the VMs are located. Thus, VMs 1 and 2 are collocated and VM 3 and 6 are separated from each other. To sum up the positioning of VMs across computes, groups and network:
+The figure [2](#net_topo) presents the network topology in a similar way to Horizon dashboard. We can see that VMs 1, 3 and 5 are in the first network (Nw1) and the 3 others in the second network (Nw2). The yellow/purple/orange represents the compute on which the VMs are located. Thus, VMs 1 and 4 are collocated and VM 3 and 6 are separated from each other. To sum up the positioning of VMs across computes, groups and network:
 
 | VM  | Compute | Group | Network |
 |:---:| :---:   | :---: | :---:   |
 | 1   | 1       | 2     | 1       |
-| 2   | 2       | 2     | 2       |
-| 3   | 2       | 3     | 1       |
-| 4   | 2       | 3     | 2       |
-| 5   | 3       | 3     | 1       |
+| 2   | 2       | 3     | 2       |
+| 3   | 3       | 3     | 1       |
+| 4   | 1       | 2     | 2       |
+| 5   | 2       | 3     | 1       |
 | 6   | 3       | 3     | 2       |
 
 This architecture allows us to test communications between two networks, two computes and to the outside.
@@ -127,13 +127,13 @@ We will now detail more about the results.
 
 
 | Domain | Colocation | Ping type   |  Source         | Destination    | Result |
-| ------ | ---------- | ----------- | --------------- | -------------- | ------ |
-| L3     | full       | East-West   |  VM1 (C1-Nw1)   | VM4 (C2-Nw2)   | <span style="color:red">X</span>      |
-| L3     | full       | East-West   |  VM4 (C2-Nw2)   | VM1 (C1-Nw1)   | <span style="color:red">X</span>      |
+| :----: | :--------: | :---------: | :-------------: | :------------: | :----: |
+| L3     | full       | East-West   |  VM1 (C1-Nw1)   | VM2 (C2-Nw2)   | <span style="color:red">X</span>      |
+| L3     | full       | East-West   |  VM2 (C2-Nw2)   | VM1 (C1-Nw1)   | <span style="color:red">X</span>      |
 | L3     | full       | North-South |  VM1 (C1-Nw1)   | 8.8.8.8        | <span style="color:red">X</span>      |
-| L3     | full       | North-South |  VM4 (C2-Nw1)   | 8.8.8.8        | <span style="color:green">V </span>     |
+| L3     | full       | North-South |  VM2 (C2-Nw1)   | 8.8.8.8        | <span style="color:green">V </span>     |
 
-As expected, compute1 is unreachable so no communication were possible through the VMs.
+As expected, compute1's VMs are unreachable so no communication were possible through the VMs. Indeed, the associated floating ip can't be used by OpenStack so there are no way to connect to the VMs through OpenStack.
 
 
 ### L3 Dense East-West/North-South ###
@@ -144,11 +144,11 @@ As expected, compute1 is unreachable so no communication were possible through t
 </figure>
 
 | Domain | Colocation | Ping type   |  Source         | Destination    | Result |
-| ------ | ---------- | ----------- | --------------- | -------------- | ------ |
-| L3     | dense      | East-West   |  VM1 (C1-Nw1)   | VM2 (C1-Nw2)   | <span style="color:red">X</span>      |
-| L3     | dense      | East-West   |  VM2 (C1-Nw2)   | VM1 (C1-Nw1)   | <span style="color:red">X</span>      |
+| :----: | :--------: | :---------: | :-------------: | :------------: | :----: |
+| L3     | dense      | East-West   |  VM1 (C1-Nw1)   | VM4 (C1-Nw2)   | <span style="color:red">X</span>      |
+| L3     | dense      | East-West   |  VM4 (C1-Nw2)   | VM1 (C1-Nw1)   | <span style="color:red">X</span>      |
 | L3     | dense      | North-South |  VM1 (C1-Nw1)   | 8.8.8.8        | <span style="color:red">X</span>      |
-| L3     | dense      | North-South |  VM2 (C1-Nw2)   | 8.8.8.8        | <span style="color:red">X</span>      |
+| L3     | dense      | North-South |  VM4 (C1-Nw2)   | 8.8.8.8        | <span style="color:red">X</span>      |
 
 As previously, since both VMs are on the unreachable compute, we can not get any ping.
 
@@ -161,18 +161,18 @@ As previously, since both VMs are on the unreachable compute, we can not get any
 </figure>
 
 | Domain | Colocation | Ping type   |  Source         | Destination    | Result |
-| ------ | ---------- | ----------- | --------------- | -------------- | ------ |
-| L2     | full       | East-West   |  VM1 (C1-Nw1)   | VM3 (C2-Nw1)   | <span style="color:red"><span style="color:red">X</span></span>      |
-| L2     | full       | East-West   |  VM3 (C2-Nw1)   | VM1 (C1-Nw1)   | <span style="color:green">V </span>     |
+| :----: | :--------: | :---------: | :-------------: | :------------: | :----: |
+| L2     | full       | East-West   |  VM1 (C1-Nw1)   | VM3 (C3-Nw1)   | <span style="color:red">X</span>   |
+| L2     | full       | East-West   |  VM3 (C3-Nw1)   | VM1 (C1-Nw1) private address  | <span style="color:green">V </span>     |
+| L2     | full       | East-West   |  VM3 (C3-Nw1)   | VM1 (C1-Nw1) public address   | <span style="color:red">X</span>     |
 | L2     | full       | North-South |  VM1 (C1-Nw1)   | 8.8.8.8        | <span style="color:red">X</span>      |
-| L2     | full       | North-South |  VM3 (C2-Nw1)   | 8.8.8.8        | <span style="color:green">V </span>     |
+| L2     | full       | North-South |  VM3 (C3-Nw1)   | 8.8.8.8        | <span style="color:green">V </span>     |
 
-TODO check
-Here the VM on the compute2 (VM3) seems to be able to ping the one on compute1 (VM1).
+Here the VM on the compute2 (VM3) seems to be able to ping the one on compute1 (VM1) through its private ip, since it does not need to go through the floating public ip.
 
 ### L2 Dense East-West/North-South ###
 
-This had to be done using a different topology as we did not have a compute that had two VMs on the same network. The principle remains entirely the same.
+This had to be done using a different topology as we did not have a compute that was cut off the network and had two VMs on the same network. The principle remains entirely the same.
 
 <figure id="L2_dense">
 <img src='{{ "assets/what-about-network-splits/L2_dense.svg" | absolute_url }}' alt="L2 dense">
@@ -181,7 +181,7 @@ This had to be done using a different topology as we did not have a compute that
 
 
 | Domain | Colocation | Ping type   |  Source         | Destination    | Result |
-| ------ | ---------- | ----------- | --------------- | -------------- | ------ |
+| :----: | :--------: | :---------: | :-------------: | :------------: | :----: |
 | L2     | dense      | East-West   |  VM1 (C1-Nw1)   | VM2 (C1-Nw1)   | <span style="color:red">X</span>      |
 | L2     | dense      | East-West   |  VM2 (C1-Nw1)   | VM1 (C1-Nw1)   | <span style="color:red">X</span>      |
 | L2     | dense      | North-South |  VM1 (C1-Nw1)   | 8.8.8.8        | <span style="color:red">X</span>      |
@@ -195,4 +195,4 @@ As for the previous dense experiments, nothing can be done since we can not reac
 As stated before, when a network gets partitioned, the resources have to implement a partition-tolerant behavior in order to avoid an interruption of service. In this part, we tried to poke around OpenStack and see how well it behaves under a split.
 
 
-First thing we have done is to cut the network, then kill the VMs on the partitioned compute. This can be done since we still can access the compute through Grid'5000 and is done thanks to `virsh destroy <VM_number>`. We then plug the compute back to OpenStack by resetting traffic control rules thanks to `enos tc --reset`. We had two good surprises at this moment. First, the compute node reappear as active in OpenStack. Second, the VMs appeared as shutoff quite quickly after the compute rejoined the network.
+First thing we have done is to cut the network, then kill the VMs on the partitioned compute. This can be done since we still can access the compute through Grid'5000 and is done thanks to `virsh destroy <VM_number>`. We then plug the compute back to OpenStack by resetting traffic control rules thanks to `enos tc :-reset`. We had two good surprises at this moment. First, the compute node reappear as active in OpenStack almost instantly. Second, the VMs appeared as shutoff quite quickly after the compute rejoined the network.

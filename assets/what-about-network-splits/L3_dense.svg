@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="153.71839"
-     inkscape:cy="215.24285"
+     inkscape:cx="357.25329"
+     inkscape:cy="207.24285"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -35,11 +35,11 @@
      fit-margin-left="0"
      fit-margin-right="0"
      fit-margin-bottom="0"
-     inkscape:window-width="1920"
-     inkscape:window-height="1029"
+     inkscape:window-width="958"
+     inkscape:window-height="1024"
      inkscape:window-x="0"
      inkscape:window-y="25"
-     inkscape:window-maximized="1" />
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata8316">
     <rdf:RDF>
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -72,7 +72,7 @@
        rx="43.920834"
        ry="28.707294" />
     <rect
-       style="opacity:1;fill:#fff4c3;fill-opacity:0.67010307;stroke:#f7b800;stroke-width:0.74900001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#fff6a5;fill-opacity:0.67010307;stroke:#f7b800;stroke-width:0.74900001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect7971"
        width="102.38995"
        height="44.295002"
@@ -114,7 +114,7 @@
          id="tspan8067"
          x="149.05537"
          y="177.84373"
-         style="font-size:4.93888903px;stroke-width:0.26458332px">VM2</tspan></text>
+         style="font-size:4.93888903px;stroke-width:0.26458332px">VM4</tspan></text>
     <g
        transform="matrix(1.4277759,0,0,1.4277759,60.729168,68.203292)"
        id="g7078-9-5">
@@ -225,7 +225,7 @@
        sodipodi:nodetypes="cc" />
     <path
        style="fill:none;fill-rule:evenodd;stroke:#e26200;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2.11999992, 1.05999996;stroke-dashoffset:0;stroke-opacity:1"
-       d="M 136.61431,160.80606 108.56839,111.91531"
+       d="M 136.6143,160.80606 108.56839,111.91532"
        id="path8230"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"

@@ -31,16 +31,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="317.02526"
+     inkscape:cx="391.24096"
      inkscape:cy="339.25904"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1029"
+     inkscape:window-width="958"
+     inkscape:window-height="1024"
      inkscape:window-x="0"
      inkscape:window-y="25"
-     inkscape:window-maximized="1"
+     inkscape:window-maximized="0"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -71,7 +71,7 @@
        rx="43.920834"
        ry="28.707291" />
     <rect
-       style="opacity:1;fill:#fff4c3;fill-opacity:0.67010307;stroke:#f7b800;stroke-width:0.54299998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#fff8a5;fill-opacity:0.67010307;stroke:#f7b800;stroke-width:0.54299998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect7971"
        width="41.577381"
        height="44.601189"
@@ -85,7 +85,7 @@
        rx="43.920834"
        ry="28.707293" />
     <rect
-       style="opacity:1;fill:#fff4c3;fill-opacity:0.67010307;stroke:#f7b800;stroke-width:0.54300004;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#bea5ff;fill-opacity:0.67010307;stroke:#7d49ff;stroke-width:0.54300004;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect7971-6"
        width="41.577381"
        height="44.601189"
@@ -138,7 +138,7 @@
          x="146.57916"
          y="166.56042"
          style="font-size:4.93888903px;stroke-width:0.26458332px"
-         id="tspan860">VM4</tspan></text>
+         id="tspan860">VM2</tspan></text>
     <g
        transform="matrix(1.4277759,0,0,1.4277759,58.252958,56.919968)"
        id="g7078-9-5">

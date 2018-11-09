@@ -26,16 +26,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="91.89585"
-     inkscape:cy="235.10181"
+     inkscape:cx="392.62836"
+     inkscape:cy="231.10181"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1920"
-     inkscape:window-height="1029"
+     inkscape:window-width="958"
+     inkscape:window-height="1024"
      inkscape:window-x="0"
      inkscape:window-y="25"
-     inkscape:window-maximized="1"
+     inkscape:window-maximized="0"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -65,14 +65,14 @@
        rx="87.35675"
        ry="25.311958" />
     <rect
-       style="opacity:1;fill:#fff4c3;fill-opacity:0.67010307;stroke:#f7b800;stroke-width:0.54300004;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#fff5a5;fill-opacity:0.67010307;stroke:#f7b800;stroke-width:0.54300004;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect7971"
        width="41.577381"
        height="44.601189"
        x="51.673443"
        y="161.40179" />
     <rect
-       style="opacity:1;fill:#fff4c3;fill-opacity:0.67010307;stroke:#f7b800;stroke-width:0.5430001;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;fill:#ffb395;fill-opacity:0.67058825;stroke:#ff682d;stroke-width:0.543;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect7971-6"
        width="41.577381"
        height="44.601189"
@@ -114,7 +114,7 @@
          id="tspan8045-9"
          x="118.99356"
          y="211.06836"
-         style="font-size:4.93888903px;stroke-width:0.26458332px">Compute2 (C2)</tspan></text>
+         style="font-size:4.93888903px;stroke-width:0.26458332px">Compute3 (C3)</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:4.93888903px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"

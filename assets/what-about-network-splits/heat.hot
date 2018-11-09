@@ -25,7 +25,7 @@ resources:
   east_private_net:
     type: OS::Neutron::Net
     properties:
-      name: lol_net_east
+      name: Network1
 
   east_private_subnet:
     type: OS::Neutron::Subnet
@@ -49,7 +49,7 @@ resources:
   west_private_net:
     type: OS::Neutron::Net
     properties:
-      name: lol_net_west
+      name: Network2
 
   west_private_subnet:
     type: OS::Neutron::Subnet
@@ -111,15 +111,15 @@ resources:
       policies:
         - anti-affinity
 
-  agent_1:
+  VM1:
     type: OS::Nova::Server
     properties:
-      name: agent_1
+      name: VM1
       image: { get_param: image }
       flavor: { get_param: flavor }
       availability_zone: "nova"
       networks:
-        - port: { get_resource: agent_1_port }
+        - port: { get_resource: VM1_port }
       scheduler_hints:
         group: { get_resource: anti_affinity_1 }
       user_data_format: RAW
@@ -127,12 +127,12 @@ resources:
         str_replace:
           template: |
             #!/bin/sh
-            screen -dmS shaker-agent-screen shaker-agent --server-endpoint=$SERVER_ENDPOINT --agent-id=$AGENT_ID
+            screen -dmS shaker-agent-screen shaker-agent --server-endpoint=$SERVER_ENDPOINT --agent-id=$VMID
           params:
             "$SERVER_ENDPOINT": { get_param: server_endpoint }
-            "$AGENT_ID": agent_1
+            "$VMID": VM1
 
-  agent_1_port:
+  VM1_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: east_private_net }
@@ -140,26 +140,26 @@ resources:
         - subnet_id: { get_resource: east_private_subnet }
       security_groups: [{ get_resource: server_security_group }]
 
-  agent_1_floating_ip:
+  VM1_floating_ip:
     type: OS::Nova::FloatingIP
     properties:
       pool: public
 
-  agent_1_association:
+  VM1_association:
     type: OS::Nova::FloatingIPAssociation
     properties:
-      floating_ip: { get_resource: agent_1_floating_ip }
-      server_id: { get_resource: agent_1 }
+      floating_ip: { get_resource: VM1_floating_ip }
+      server_id: { get_resource: VM1 }
 
-  agent_2:
+  VM2:
     type: OS::Nova::Server
     properties:
-      name: agent_2
+      name: VM2
       image: { get_param: image }
       flavor: { get_param: flavor }
       availability_zone: "nova"
       networks:
-        - port: { get_resource: agent_2_port }
+        - port: { get_resource: VM2_port }
       scheduler_hints:
         group: { get_resource: anti_affinity_1 }
       user_data_format: RAW
@@ -167,12 +167,12 @@ resources:
         str_replace:
           template: |
             #!/bin/sh
-            screen -dmS shaker-agent-screen shaker-agent --server-endpoint=$SERVER_ENDPOINT --agent-id=$AGENT_ID
+            screen -dmS shaker-agent-screen shaker-agent --server-endpoint=$SERVER_ENDPOINT --agent-id=$VMID
           params:
             "$SERVER_ENDPOINT": { get_param: server_endpoint }
-            "$AGENT_ID": agent_2
+            "$VMID": VM2
 
-  agent_2_port:
+  VM2_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: west_private_net }
@@ -180,26 +180,26 @@ resources:
         - subnet_id: { get_resource: west_private_subnet }
       security_groups: [{ get_resource: server_security_group }]
 
-  agent_2_floating_ip:
+  VM2_floating_ip:
     type: OS::Nova::FloatingIP
     properties:
       pool: public
 
-  agent_2_association:
+  VM2_association:
     type: OS::Nova::FloatingIPAssociation
     properties:
-      floating_ip: { get_resource: agent_2_floating_ip }
-      server_id: { get_resource: agent_2 }
+      floating_ip: { get_resource: VM2_floating_ip }
+      server_id: { get_resource: VM2 }
 
-  agent_3:
+  VM3:
     type: OS::Nova::Server
     properties:
-      name: agent_3
+      name: VM3
       image: { get_param: image }
       flavor: { get_param: flavor }
       availability_zone: "nova"
       networks:
-        - port: { get_resource: agent_3_port }
+        - port: { get_resource: VM3_port }
       scheduler_hints:
         group: { get_resource: anti_affinity_1 }
       user_data_format: RAW
@@ -207,12 +207,12 @@ resources:
         str_replace:
           template: |
             #!/bin/sh
-            screen -dmS shaker-agent-screen shaker-agent --server-endpoint=$SERVER_ENDPOINT --agent-id=$AGENT_ID
+            screen -dmS shaker-agent-screen shaker-agent --server-endpoint=$SERVER_ENDPOINT --agent-id=$VMID
           params:
             "$SERVER_ENDPOINT": { get_param: server_endpoint }
-            "$AGENT_ID": agent_3
+            "$VMID": VM3
 
-  agent_3_port:
+  VM3_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: east_private_net }
@@ -220,26 +220,26 @@ resources:
         - subnet_id: { get_resource: east_private_subnet }
       security_groups: [{ get_resource: server_security_group }]
 
-  agent_3_floating_ip:
+  VM3_floating_ip:
     type: OS::Nova::FloatingIP
     properties:
       pool: public
 
-  agent_3_association:
+  VM3_association:
     type: OS::Nova::FloatingIPAssociation
     properties:
-      floating_ip: { get_resource: agent_3_floating_ip }
-      server_id: { get_resource: agent_3 }
+      floating_ip: { get_resource: VM3_floating_ip }
+      server_id: { get_resource: VM3 }
 
-  agent_4:
+  VM4:
     type: OS::Nova::Server
     properties:
-      name: agent_4
+      name: VM4
       image: { get_param: image }
       flavor: { get_param: flavor }
       availability_zone: "nova"
       networks:
-        - port: { get_resource: agent_4_port }
+        - port: { get_resource: VM4_port }
       scheduler_hints:
         group: { get_resource: anti_affinity_2 }
       user_data_format: RAW
@@ -247,12 +247,12 @@ resources:
         str_replace:
           template: |
             #!/bin/sh
-            screen -dmS shaker-agent-screen shaker-agent --server-endpoint=$SERVER_ENDPOINT --agent-id=$AGENT_ID
+            screen -dmS shaker-agent-screen shaker-agent --server-endpoint=$SERVER_ENDPOINT --agent-id=$VMID
           params:
             "$SERVER_ENDPOINT": { get_param: server_endpoint }
-            "$AGENT_ID": agent_4
+            "$VMID": VM4
 
-  agent_4_port:
+  VM4_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: west_private_net }
@@ -260,26 +260,26 @@ resources:
         - subnet_id: { get_resource: west_private_subnet }
       security_groups: [{ get_resource: server_security_group }]
 
-  agent_4_floating_ip:
+  VM4_floating_ip:
     type: OS::Nova::FloatingIP
     properties:
       pool: public
 
-  agent_4_association:
+  VM4_association:
     type: OS::Nova::FloatingIPAssociation
     properties:
-      floating_ip: { get_resource: agent_4_floating_ip }
-      server_id: { get_resource: agent_4 }
+      floating_ip: { get_resource: VM4_floating_ip }
+      server_id: { get_resource: VM4 }
 
-  agent_5:
+  VM5:
     type: OS::Nova::Server
     properties:
-      name: agent_5
+      name: VM5
       image: { get_param: image }
       flavor: { get_param: flavor }
       availability_zone: "nova"
       networks:
-        - port: { get_resource: agent_5_port }
+        - port: { get_resource: VM5_port }
       scheduler_hints:
         group: { get_resource: anti_affinity_2 }
       user_data_format: RAW
@@ -287,12 +287,12 @@ resources:
         str_replace:
           template: |
             #!/bin/sh
-            screen -dmS shaker-agent-screen shaker-agent --server-endpoint=$SERVER_ENDPOINT --agent-id=$AGENT_ID
+            screen -dmS shaker-agent-screen shaker-agent --server-endpoint=$SERVER_ENDPOINT --agent-id=$VMID
           params:
             "$SERVER_ENDPOINT": { get_param: server_endpoint }
-            "$AGENT_ID": agent_5
+            "$VMID": VM5
 
-  agent_5_port:
+  VM5_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: east_private_net }
@@ -300,26 +300,26 @@ resources:
         - subnet_id: { get_resource: east_private_subnet }
       security_groups: [{ get_resource: server_security_group }]
 
-  agent_5_floating_ip:
+  VM5_floating_ip:
     type: OS::Nova::FloatingIP
     properties:
       pool: public
 
-  agent_5_association:
+  VM5_association:
     type: OS::Nova::FloatingIPAssociation
     properties:
-      floating_ip: { get_resource: agent_5_floating_ip }
-      server_id: { get_resource: agent_5 }
+      floating_ip: { get_resource: VM5_floating_ip }
+      server_id: { get_resource: VM5 }
 
-  agent_6:
+  VM6:
     type: OS::Nova::Server
     properties:
-      name: agent_6
+      name: VM6
       image: { get_param: image }
       flavor: { get_param: flavor }
       availability_zone: "nova"
       networks:
-        - port: { get_resource: agent_6_port }
+        - port: { get_resource: VM6_port }
       scheduler_hints:
         group: { get_resource: anti_affinity_2 }
       user_data_format: RAW
@@ -327,12 +327,12 @@ resources:
         str_replace:
           template: |
             #!/bin/sh
-            screen -dmS shaker-agent-screen shaker-agent --server-endpoint=$SERVER_ENDPOINT --agent-id=$AGENT_ID
+            screen -dmS shaker-agent-screen shaker-agent --server-endpoint=$SERVER_ENDPOINT --agent-id=$VMID
           params:
             "$SERVER_ENDPOINT": { get_param: server_endpoint }
-            "$AGENT_ID": agent_6
+            "$VMID": VM6
 
-  agent_6_port:
+  VM6_port:
     type: OS::Neutron::Port
     properties:
       network_id: { get_resource: west_private_net }
@@ -340,45 +340,45 @@ resources:
         - subnet_id: { get_resource: west_private_subnet }
       security_groups: [{ get_resource: server_security_group }]
 
-  agent_6_floating_ip:
+  VM6_floating_ip:
     type: OS::Nova::FloatingIP
     properties:
       pool: public
 
-  agent_6_association:
+  VM6_association:
     type: OS::Nova::FloatingIPAssociation
     properties:
-      floating_ip: { get_resource: agent_6_floating_ip }
-      server_id: { get_resource: agent_6 }
+      floating_ip: { get_resource: VM6_floating_ip }
+      server_id: { get_resource: VM6 }
 
 
 outputs:
-  agent_1_instance_name:
-    value: { get_attr: [ agent_1, instance_name ] }
-  agent_1_ip:
-    value: { get_attr: [ agent_1, networks, { get_attr: [east_private_net, name] }, 0 ] }
+  VM1_instance_name:
+    value: { get_attr: [ VM1, instance_name ] }
+  VM1_ip:
+    value: { get_attr: [ VM1, networks, { get_attr: [east_private_net, name] }, 0 ] }
 
-  agent_2_instance_name:
-    value: { get_attr: [ agent_2, instance_name ] }
-  agent_2_ip:
-    value: { get_attr: [ agent_2, networks, { get_attr: [west_private_net, name] }, 0 ] }
+  VM2_instance_name:
+    value: { get_attr: [ VM2, instance_name ] }
+  VM2_ip:
+    value: { get_attr: [ VM2, networks, { get_attr: [west_private_net, name] }, 0 ] }
 
-  agent_3_instance_name:
-    value: { get_attr: [ agent_3, instance_name ] }
-  agent_3_ip:
-    value: { get_attr: [ agent_3, networks, { get_attr: [east_private_net, name] }, 1 ] }
+  VM3_instance_name:
+    value: { get_attr: [ VM3, instance_name ] }
+  VM3_ip:
+    value: { get_attr: [ VM3, networks, { get_attr: [east_private_net, name] }, 1 ] }
 
-  agent_4_instance_name:
-    value: { get_attr: [ agent_4, instance_name ] }
-  agent_4_ip:
-    value: { get_attr: [ agent_4, networks, { get_attr: [west_private_net, name] }, 1 ] }
+  VM4_instance_name:
+    value: { get_attr: [ VM4, instance_name ] }
+  VM4_ip:
+    value: { get_attr: [ VM4, networks, { get_attr: [west_private_net, name] }, 1 ] }
 
-  agent_5_instance_name:
-    value: { get_attr: [ agent_5, instance_name ] }
-  agent_5_ip:
-    value: { get_attr: [ agent_5, networks, { get_attr: [east_private_net, name] }, 2 ] }
+  VM5_instance_name:
+    value: { get_attr: [ VM5, instance_name ] }
+  VM5_ip:
+    value: { get_attr: [ VM5, networks, { get_attr: [east_private_net, name] }, 2 ] }
 
-  agent_6_instance_name:
-    value: { get_attr: [ agent_6, instance_name ] }
-  agent_6_ip:
-    value: { get_attr: [ agent_6, networks, { get_attr: [west_private_net, name] }, 2 ] }
+  VM6_instance_name:
+    value: { get_attr: [ VM6, instance_name ] }
+  VM6_ip:
+    value: { get_attr: [ VM6, networks, { get_attr: [west_private_net, name] }, 2 ] }

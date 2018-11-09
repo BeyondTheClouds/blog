@@ -26,8 +26,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="35.1469"
-     inkscape:cy="145.37673"
+     inkscape:cx="-155.8531"
+     inkscape:cy="141.37673"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -100,7 +100,8 @@
          inkscape:connector-curvature="0" />
     </g>
     <g
-       id="g903">
+       id="g903"
+       transform="translate(100.18465,-7.6205768)">
       <circle
          r="5.9135928"
          cy="113.11458"
@@ -145,7 +146,8 @@
          inkscape:connector-curvature="0" />
     </g>
     <g
-       id="g879">
+       id="g879"
+       transform="translate(26.458331,5.2916667)">
       <circle
          r="5.9135928"
          cy="78.189583"
@@ -153,13 +155,14 @@
          id="path6974-2-6"
          style="opacity:1;fill:#fff5a5;fill-opacity:1;stroke:#000000;stroke-width:0.54299998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       <path
-         style="stroke-width:0.26458332;stroke:none;stroke-opacity:1"
+         style="stroke:none;stroke-width:0.26458332;stroke-opacity:1"
          id="path4645-0"
          d="m 104.775,75.54375 h -4.7625 c -0.291041,0 -0.529166,0.238125 -0.529166,0.529167 v 3.175 c 0,0.291041 0.238125,0.529166 0.529166,0.529166 h 1.85208 v 0.529167 h -0.52916 v 0.529167 h 2.11666 V 80.30625 h -0.52916 v -0.529167 h 1.85208 c 0.29104,0 0.52917,-0.238125 0.52917,-0.529166 v -3.175 c 0,-0.291042 -0.23813,-0.529167 -0.52917,-0.529167 z m 0,3.704167 h -4.7625 v -3.175 h 4.7625 z"
          inkscape:connector-curvature="0" />
     </g>
     <g
-       id="g907">
+       id="g907"
+       transform="translate(-24.620777,-4.9625716)">
       <circle
          r="5.9135928"
          cy="82.95208"
@@ -173,7 +176,8 @@
          inkscape:connector-curvature="0" />
     </g>
     <g
-       id="g915">
+       id="g915"
+       transform="translate(-98.645821,6.4820865)">
       <circle
          r="5.9135928"
          cy="105.44167"
